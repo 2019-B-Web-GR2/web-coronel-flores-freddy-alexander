@@ -14,6 +14,7 @@ import { AppService } from './app.service';
 
 @Controller('calculadora')
 export class AppController {
+  count: number = 100;
   constructor(private readonly appService: AppService) {}
   @HttpCode(200)
   @Get('suma-headers')
@@ -22,7 +23,13 @@ export class AppController {
       @Headers('number2') number2,
   ): string {
     if (Number(number1) && Number(number2)) {
-      return `${(Number(number2) + Number(number1))}` ;
+      if(this.count <= 0){
+        this.count = 100;
+        return 'Se reinicia la el contador';
+
+      }
+      this.count -= (Number(number2) + Number(number1));
+      return `${(Number(number2) + Number(number1))} counter= ${this.count}`;
     } else {
       throw  new InternalServerErrorException('Debes especificar dos numeros en los headers con nombre numero1 y numero2');
     }
@@ -35,7 +42,14 @@ export class AppController {
       @Body() numerosBody: Numbers,
   ): string {
     if (numerosBody.number1 && numerosBody.number2) {
-      return `${numerosBody.number1 - numerosBody.number2}`;
+      if (this.count<=0){
+        this.count = 100;
+        return 'Se reinicia la el contador';
+
+
+      }
+      this.count -= (numerosBody.number1 - numerosBody.number2);
+      return `${numerosBody.number1 - numerosBody.number2} counter=${this.count}`;
     } else {
       throw  new InternalServerErrorException('enviar dos números en json con ');
     }
@@ -48,7 +62,15 @@ export class AppController {
   ): string {
     // console.log(numbersQuery);
     if (numbersQuery.number1 && numbersQuery.number2) {
-      return `${Number(numbersQuery.number1) * Number(numbersQuery.number2)}`;
+      if(this.count <= 0){
+        this.count = 100;
+        return 'Se reinicia la el contador';
+
+
+      }
+      this.count -= Number(numbersQuery.number1) * Number(numbersQuery.number2);
+
+      return `${Number(numbersQuery.number1) * Number(numbersQuery.number2)} counter= ${this.count}`;
     } else {
       throw  new InternalServerErrorException('enviar dos números en query params ');
     }
@@ -62,15 +84,22 @@ export class AppController {
       @Headers('number1') number1,
       @Headers('number2') number2,
 
-  ): string{
+  ): string {
     if (numerosBody.number2 && numerosBody.number2 && numerosQuery.number2 && numerosQuery.number1
     && number1 && number2) {
       if (Number(numerosQuery.number2) === 0 || numerosBody.number2 === 0 && Number(number2) === 0 ) {
         throw  new InternalServerErrorException('error al dividir para cero');
       } else {
+        if(this.count <= 0){
+          this.count = 100;
+          return "se reinica el contador";
+        }
+        this.count -= Number(numerosQuery.number1) / Number(numerosQuery.number2);
+        this.count -= numerosBody.number1 / numerosBody.number2;
+        this.count -= Number(number1) / Number(number2);
         return `division con query params: ${Number(numerosQuery.number1) / Number(numerosQuery.number2)}
         division con body params: ${numerosBody.number1 / numerosBody.number2} 
-        divison con headers: ${Number(number1) / Number(number2) }`;
+        divison con headers: ${Number(number1) / Number(number2) } counter=${this.count}`;
       }
     } else {
       throw  new InternalServerErrorException('enviar dos números en query params, headers y body params ');
