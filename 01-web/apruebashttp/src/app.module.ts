@@ -3,10 +3,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {UsuarioEntity} from "./usuario/usuario.entity";
+import {UsuarioModule} from "./usuario/usuario.module";
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
+      UsuarioModule,
+      TypeOrmModule.forRoot({
+      name: 'default', // nombre de la cadena de conexion
       type: 'mysql',
       host: 'localhost',
       port: 32769,
@@ -16,7 +19,7 @@ import {UsuarioEntity} from "./usuario/usuario.entity";
       entities: [
           UsuarioEntity,
       ],
-      synchronize: true,
+      synchronize: true
     }),
   ],
   controllers: [AppController],

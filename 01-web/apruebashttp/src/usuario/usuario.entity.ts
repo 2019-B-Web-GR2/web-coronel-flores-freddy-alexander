@@ -8,6 +8,6 @@ export class UsuarioEntity {
         name: 'id_web',
         comment: 'identificador de la tabla usuario'
     })
-    id: number
+    id: number;
 
 }
