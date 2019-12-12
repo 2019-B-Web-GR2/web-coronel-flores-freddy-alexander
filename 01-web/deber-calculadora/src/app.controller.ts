@@ -62,8 +62,9 @@ export class AppController {
   ): string {
     // console.log(numbersQuery);
     if (numbersQuery.number1 && numbersQuery.number2) {
-      if(this.count <= 0){
+      if(this.count <= 0) {
         this.count = 100;
+        console.log("que se yo");
         return 'Se reinicia la el contador';
 
 
