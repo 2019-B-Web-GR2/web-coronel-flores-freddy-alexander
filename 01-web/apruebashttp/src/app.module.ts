@@ -13,9 +13,9 @@ import {UsuarioService} from "./usuario/usuario.service";
       name: 'default', // nombre de la cadena de conexion
       type: 'mysql',
       host: 'localhost',
-      port: 32769,
+      port: 3773,
       username: 'root',
-      password: 'alex1995',
+      password: 'alexc1995',
       dropSchema: true,
       database: 'web',
       entities: [
@@ -34,6 +34,7 @@ export class AppModule {
         /* const usuarioPromesa = this._usuarioService.encontrarUno(1);
         console.log('empieza')
         console.log(usuarioPromesa)
+
         usuarioPromesa
             .then(
                 (data) => {
