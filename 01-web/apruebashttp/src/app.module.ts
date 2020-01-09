@@ -1,3 +1,4 @@
+/* tslint:disable:no-console */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -29,22 +30,22 @@ import {UsuarioService} from "./usuario/usuario.service";
   
 })
 export class AppModule {
+    // tslint:disable-next-line:variable-name
     constructor( private _usuarioService: UsuarioService) {
 
-        /* const usuarioPromesa = this._usuarioService.encontrarUno(1);
+        const usuarioPromesa = this._usuarioService.encontrarUno(1);
         console.log('empieza')
         console.log(usuarioPromesa)
         usuarioPromesa
             .then(
                 (data) => {
-                    console.log('data',data)
+                    console.log('data', data)
                 }
             )
             .catch((error) => {
-                console.log('error',error)
+                console.log('error', error)
             });
 
-        console.log('termina en orden')
-        */
+        console.log('termina en orden');
     }
 }

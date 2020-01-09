@@ -1,18 +1,19 @@
-import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {UsuarioEntity} from "./usuario.entity";
-import {DeleteResult, Repository} from "typeorm";
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {UsuarioEntity} from './usuario.entity';
+import {DeleteResult, Repository} from 'typeorm';
 
 @Injectable()
 export  class UsuarioService {
     constructor(
         // inyectar las dependencias
         // cualquier clase se puede inyectar
+
         @InjectRepository(UsuarioEntity) private _repositorioUsuario: Repository<UsuarioEntity>,
     ){}
 
-    encontrarUno(id: number): Promise<UsuarioEntity> | undefined{
-        const usuario = this._repositorioUsuario.findOne(id);
+    async encontrarUno(id: number): Promise<UsuarioEntity> | undefined{
+        const usuario = await this._repositorioUsuario.findOne(id);
         // transformar la programación asincrona en sincrona con async y await
         return usuario;
     }
@@ -34,25 +35,25 @@ export  class UsuarioService {
 
     buscar(
         whereNormal = {},
-        skip: number= 0,
-        take: number= 10,
-    ){
+        skipReceived: number= 0,
+        takeReceved: number= 10,
+    ) {
         this._repositorioUsuario.find(
             {
                 // where: {
                  //    cedula: '48248',
-                //},
+                // },
                 where: [
                     {
                         nombre: 'alex'                    },
                     {
                         cedula: '4548',
-                    }
+                    },
                 ],
-                skip: 0,
-                take: 10,
+                skip: skipReceived,
+                take: takeReceved,
             },
-        )
+        );
     }
 
 

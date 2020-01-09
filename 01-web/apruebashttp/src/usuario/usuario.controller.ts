@@ -4,7 +4,7 @@ import {UsuarioEntity} from "./usuario.entity";
 
 @Controller('usuario')
 export class UsuarioController {
-    // aqui validamos las cosas
+    // tslint:disable-next-line:variable-name
     constructor(private readonly  _usuarioService: UsuarioService) {
     }
 
