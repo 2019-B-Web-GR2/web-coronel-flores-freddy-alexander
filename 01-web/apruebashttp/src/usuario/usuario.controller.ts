@@ -74,18 +74,31 @@ export class UsuarioController {
     @Post()
     async guardarUno(
         @Body() usuario: UsuarioEntity,
+        @Session() sesion,
     ): Promise<UsuarioEntity | undefined> {
-        const usuarioCreateDto = new UsuarioCreateDto();
-        usuarioCreateDto.nombre = usuario.nombre;
-        usuarioCreateDto.cedula = usuario.cedula;
+        if (sesion.usuario) {
+            const rol = sesion.usuario.roles.find( r => r === 'Administrador' );
+            if (rol) {
+                const usuarioCreateDto = new UsuarioCreateDto();
+                usuarioCreateDto.nombre = usuario.nombre;
+                usuarioCreateDto.cedula = usuario.cedula;
 
-        const errores = await validate(usuarioCreateDto);
-        console.log(errores);
-        if (errores.length > 0) {
-               throw new BadRequestException('Error validando');
+                const errores = await validate(usuarioCreateDto);
+                console.log(errores);
+                if (errores.length > 0) {
+                    throw new BadRequestException('Error validando');
+                } else {
+                    console.log(usuario);
+                    return this._usuarioService.guardarUno(usuario);
+                }
+
+
+            } else {
+                throw new BadRequestException('Debes ser administrador para guardar un nuevo usuario');
+            }
+
         } else {
-            console.log(usuario);
-            return this._usuarioService.guardarUno(usuario);
+            throw new BadRequestException('Debes estar logueado');
         }
 
     }
@@ -94,30 +107,64 @@ export class UsuarioController {
     async  actualizarUnUsuario(
       @Body() usuario: UsuarioEntity,
       @Param('id') id: string,
+      @Session() sesion,
      ): Promise<UsuarioEntity> {
-        const usuarioUpdateDto = new UsuarioUpdateDto();
-        usuarioUpdateDto.nombre = usuario.nombre;
-        usuarioUpdateDto.cedula = usuario.cedula;
-        usuarioUpdateDto.id = +id;
-        const errores = await validate(usuarioUpdateDto);
-        if (errores.length > 0) {
-            console.log(errores);
-            throw new BadRequestException('Error validando');
+        if (sesion.usuario) {
+            const rol = sesion.usuario.roles.find( r => r === 'Administrador' || r === 'Supervisor' );
+            if (rol) {
+                const usuarioUpdateDto = new UsuarioUpdateDto();
+                usuarioUpdateDto.nombre = usuario.nombre;
+                usuarioUpdateDto.cedula = usuario.cedula;
+                usuarioUpdateDto.id = +id;
+                const errores = await validate(usuarioUpdateDto);
+                if (errores.length > 0) {
+                    console.log(errores);
+                    throw new BadRequestException('Error validando');
+                } else {
+                    return this._usuarioService.actualizarUno(+id, usuario);
+                }
+
+
+            } else {
+                throw new BadRequestException('Debes ser administrador para editar un usuario');
+            }
+
         } else {
-            return this._usuarioService.actualizarUno(+id, usuario);
+            throw new BadRequestException('Debes estar logueado');
         }
+
+
+
+
+
 
     }
 
     @Delete(':id')
     eliminarUno(
       @Param('id') id: string,
+      @Session() sesion,
 
     ): Promise<DeleteResult> {
-        return this._usuarioService
-          .borrarUno(
-            +id,
-          );
+
+        if (sesion.usuario) {
+            const rol = sesion.usuario.roles.find( r => r === 'Administrador' );
+            if (rol) {
+                return this._usuarioService
+                  .borrarUno(
+                    +id,
+                  );
+
+            } else {
+                throw new BadRequestException('Debes ser administrador para eliminar un usuario');
+            }
+
+        } else {
+            throw new BadRequestException('Debes estar logueado');
+        }
+
+
+
 
     }
 
