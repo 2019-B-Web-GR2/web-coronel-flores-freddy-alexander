@@ -1,18 +1,21 @@
-import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {UsuarioEntity} from "./usuario.entity";
-import {DeleteResult, Repository} from "typeorm";
+
+import {Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {UsuarioEntity} from './usuario.entity';
+import {DeleteResult, Repository, MoreThan, Like} from 'typeorm';
+
 
 @Injectable()
 export  class UsuarioService {
     constructor(
         // inyectar las dependencias
         // cualquier clase se puede inyectar
+
         @InjectRepository(UsuarioEntity) private _repositorioUsuario: Repository<UsuarioEntity>,
     ){}
 
-    encontrarUno(id: number): Promise<UsuarioEntity> | undefined{
-        const usuario = this._repositorioUsuario.findOne(id);
+    async encontrarUno(id: number): Promise<UsuarioEntity> | undefined{
+        const usuario = await this._repositorioUsuario.findOne(id);
         // transformar la programación asincrona en sincrona con async y await
         return usuario;
     }
@@ -23,7 +26,7 @@ export  class UsuarioService {
         return usuarioGuardado;
     }
 
-    borrarUno(id: number): Promise<DeleteResult>{
+    borrarUno(id: number): Promise<DeleteResult> {
         return this._repositorioUsuario.delete(id);
     }
 
@@ -33,26 +36,51 @@ export  class UsuarioService {
     }
 
     buscar(
-        whereNormal = {},
-        skip: number= 0,
-        take: number= 10,
-    ){
-        this._repositorioUsuario.find(
+
+        whereNormal: any = {},
+        skip1: number= 0,
+        take1: number= 10,
+        order1: any = {
+            id: 'DESC',
+            nombre: 'ASC',
+        },
+    ): Promise<UsuarioEntity[]> {
+        // exactamente el nombre o exactamente la cedula
+        const consultaWhere = [
             {
-                // where: {
-                 //    cedula: '48248',
-                //},
-                where: [
-                    {
-                        nombre: 'alex'                    },
-                    {
-                        cedula: '4548',
-                    }
-                ],
-                skip: 0,
-                take: 10,
+                nombre: '',
             },
-        )
+            {
+                cedula: '',
+            },
+        ];
+        // exactamente le nombre o LIKE la cedula
+        const consultaWhereLike = [
+            {
+                nombre: Like('%a%'),
+            },
+            {
+              cedula: Like('%a%'),
+            },
+        ];
+        // id sea mayor a 20
+        const consultaWhereMayorA = {
+            id: MoreThan(20),
+        };
+        // id sea igual a x
+        const consultaWhereIgualA = {
+            id: 30,
+        };
+
+        return this._repositorioUsuario.find(
+            {
+
+                where: whereNormal,
+                skip: skip1,
+                take: take1,
+                order: order1,
+            },
+        );
     }
 
 
