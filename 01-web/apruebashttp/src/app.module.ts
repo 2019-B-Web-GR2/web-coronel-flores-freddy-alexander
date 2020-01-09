@@ -36,6 +36,7 @@ export class AppModule {
         const usuarioPromesa = this._usuarioService.encontrarUno(1);
         console.log('empieza')
         console.log(usuarioPromesa)
+
         usuarioPromesa
             .then(
                 (data) => {
