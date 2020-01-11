@@ -1,3 +1,46 @@
-<html>
-<p>hola <%= nombre %></p>
-</html>
+<% const version = "1.00" %>
+<% consttotal = 1+2; %>
+<% const alex = {
+    nombre: 'alex',
+    esProfesor: true
+
+}; %>
+
+<% function addYear(num) {
+    return '2020-'+num;
+
+} %>
+
+
+<% const arregloNumeros = [1,2,3,4,5,6] %>
+<% const urlBase = 'https://images.mediotiempo.com/'; %>
+<% arregloNumeros.forEach((numero) => { %>
+
+    <%- include('components/numeros/mostrar-numero',
+    {addYear: addYear,
+    numero: numero,
+    urlBase: urlBase}) %>
+
+
+<% }); %>
+
+<p>hola <%= datos.nombre %></p>
+
+
+<p>Version <%= version %></p>
+
+<p>arreglo <%= arregloNumeros %></p>
+
+<p> objeto <%= alex.nombre %>   </p>
+
+<% if(alex.esProfesor) {%>
+    <h1>Bienvenido profe <%= alex.nombre %></h1>
+    <p>suma <%= datos.suma(2,3) %></p>
+
+<% } else { %>
+    <h1>bievenido estudiante </h1>
+    <p>suma <%= datos.suma(2,3) %></p>
+
+<% }%>
+
+

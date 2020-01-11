@@ -20,21 +20,43 @@ import { validate } from 'class-validator';
 import { UsuarioUpdateDto } from './usuario.update-dto';
 
 
+
 @Controller('usuario')
 export class UsuarioController {
     // tslint:disable-next-line:variable-name
     constructor(private readonly  _usuarioService: UsuarioService) {
     }
 
+    suma(num1,num2) {
+        return num1+num2;
+    }
+
+
+    @Get('ruta/mostrar-usuarios')
+    async mostrarUsuarios(
+         @Res() res,
+    ) {
+        const users = await this._usuarioService.buscar();
+        console.log(users)
+        res.render('usuario/routes/buscar-mostrar-tabla',
+            {
+                datos: {
+                    users,
+                },
+            });
+    }
     @Get('ejemploejs')
     ejemplosejs(
         @Res() res,
     ) {
         res.render('ejemplo',
             {
+                datos: {
+                    nombre: 'Alex',
+                    suma: this.suma,
+                },
 
-                nombre:'Alex',
-            })
+            });
     }
 
     @Post('login')
@@ -267,7 +289,7 @@ export class UsuarioController {
           .buscar(
             where,
             skip as number,
-            take as number,
+           take as number,
             order,
             );
     }
