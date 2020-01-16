@@ -1,4 +1,21 @@
+<%- include('../../compartido/cabecera')%>
+
 <h1>Ruta mostrar usuario </h1>
 
-<%- include('../components/mostrar-table',
-{users: datos.users}) %>
+<a href="/usuario/ruta/crear-usuario">
+    <button  type="button"
+             class="btn btn-primary">Crear usuario
+    </button>
+</a>
+
+
+
+<div class="container">
+    <%- include('../components/mostrar-table',
+    {users: datos.users}) %>
+
+</div>
+
+
+
+<%- include('../../compartido/pie-de-pagina')%>

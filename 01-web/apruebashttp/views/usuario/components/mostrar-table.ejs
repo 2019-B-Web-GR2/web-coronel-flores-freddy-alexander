@@ -4,3 +4,36 @@
 
     <p><%= user.nombre %></p>
 <% }); %>
+
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Cedula</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.forEach( (user) => {%>
+    <tr>
+        <th scope="row"><%= user.id %></th>
+        <td><%= user.nombre %></td> <!-- table detail -->
+        <td> <%= user.cedula %> </td>
+        <td>
+            <button
+                    type="button"
+                    class="btn btn-info">
+                Editar
+            </button>
+            <button
+                    type="button"
+                    class="btn btn-danger" >
+                Eliminar
+            </button>
+        </td>
+    </tr>
+    <%});%>
+    </tbody>
+</table>
