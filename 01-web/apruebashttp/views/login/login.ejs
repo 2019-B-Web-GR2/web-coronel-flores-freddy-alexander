@@ -1,0 +1,57 @@
+<%- include('../compartido/cabecera')  %>
+
+<div class="container">
+    <h1>crear usuario</h1>
+
+    <form action="/usuario/login"
+          method="POST">
+
+        <div class="form-group">
+            <label for="usernameID">Username</label>
+            <input  id="usernameID"
+                    type="text"
+                    name="username"
+                    class="form-control"
+                    title="Ingresar username"
+                    placeholder="Ej: alex"
+            >
+
+            <small id="usernameIDHelp"
+                   class="form-text text-muted">
+                Ingresa un nombre mayor a 3 caracteres
+            </small>
+
+        </div>
+
+        <div class="form-group">
+            <label for="passwordID">Password</label>
+            <input  id="passwordID"
+                    type="password"
+                    name="password"
+                    class="form-control"
+                    title="Ingresar password"
+                    placeholder="Ej: *****"
+            >
+
+            <small id="passworIDHelp"
+                   class="form-text text-muted">
+                ingresar password
+            </small>
+
+        </div>
+
+
+        <button type="submit"
+                class="btn btn-success">Submit</button>
+        <button type="reset"
+                class="btn btn-secondary"
+        >limpiar </button>
+        <button type="button">buton</button>
+
+    </form>
+
+
+</div>
+
+
+<%- include('../compartido/pie-de-pagina')  %>

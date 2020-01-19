@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +8,24 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+
+  @Post('login')
+  login(
+    @Body('username') username: string,
+    @Body('password') password: string,
+    @Session() session,
+  ) {
+    console.log('seesion', session);
+    if (username === 'admin' && password === '1234') {
+      session.user = {
+        name: 'Alex',
+        userId: 1,
+        roles: ['Admin'],
+      };
+      return  'ok'
+    }
+    return 'Bad credentials'
   }
 }

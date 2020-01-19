@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MotelEntity } from '../motel/motel.entity';
 
 @Entity('room')
@@ -40,7 +40,7 @@ export class RoomEntity {
   })
   ocupada: boolean;
 
-  @ManyToMany(type => MotelEntity, motel => motel.rooms)
+  @ManyToOne(type => MotelEntity, motel => motel.rooms)
   motel: MotelEntity;
 
 }

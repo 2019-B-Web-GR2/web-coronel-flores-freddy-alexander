@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Session } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomEntity } from './room.entity';
+import { RoomCreateDto } from './room.create-dto';
 
 @Controller('room')
 export class RoomController {
@@ -16,9 +17,17 @@ export class RoomController {
 
   @Post()
   saveOne(
-    @Body() room: RoomEntity
-  ): Promise<RoomEntity> | undefined {
-    return this.roomService.saveOne(room);
+    @Body() room: RoomEntity,
+    @Session() session,
+  ) {
+    if (session.user) {
+
+      const roomCreateDto = new RoomCreateDto()
+
+      return this.roomService.saveOne(room);
+
+    }
+
   }
 
 }

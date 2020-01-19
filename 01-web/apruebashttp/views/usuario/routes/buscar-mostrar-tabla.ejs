@@ -6,11 +6,30 @@
     <button  type="button"
              class="btn btn-primary">Crear usuario
     </button>
+
 </a>
 
 
 
+
+
 <div class="container">
+    <% if(datos.mensaje) {%>
+
+        <div class="alert alert-primary" role="alert">
+            <%= datos.mensaje %>
+        </div>
+
+    <%}%>
+
+        <% if(datos.error) {%>
+
+            <div class="alert alert-error" role="alert">
+                <%= datos.error %>
+            </div>
+
+        <%}%>
+
     <%- include('../components/mostrar-table',
     {users: datos.users}) %>
 

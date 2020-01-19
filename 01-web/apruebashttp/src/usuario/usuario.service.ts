@@ -5,6 +5,7 @@ import {UsuarioEntity} from './usuario.entity';
 import {DeleteResult, Repository, MoreThan, Like} from 'typeorm';
 
 
+
 @Injectable()
 export  class UsuarioService {
     constructor(

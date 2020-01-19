@@ -1,9 +1,7 @@
 <h1>Tabla mostrar usuario</h1>
 
-<% users.forEach((user) => {%>
 
-    <p><%= user.nombre %></p>
-<% }); %>
+
 
 
 <table class="table">
@@ -27,11 +25,16 @@
                     class="btn btn-info">
                 Editar
             </button>
-            <button
-                    type="button"
-                    class="btn btn-danger" >
-                Eliminar
-            </button>
+
+            <form action="/usuario/<%= user.id %>"
+                  method="POST">
+                <button
+                        type="submit"
+                        class="btn btn-danger" >
+                    Eliminar
+                </button>
+
+            </form>
         </td>
     </tr>
     <%});%>

@@ -18,6 +18,7 @@ import * as Joi from '@hapi/joi';
 import { UsuarioCreateDto } from './usuario.create-dto';
 import { validate } from 'class-validator';
 import { UsuarioUpdateDto } from './usuario.update-dto';
+import {tryCatch} from "rxjs/internal-compatibility";
 
 
 
@@ -35,6 +36,7 @@ export class UsuarioController {
     @Get('ruta/mostrar-usuarios')
     async mostrarUsuarios(
          @Res() res,
+         @Query('mensaje') mensaje: string
     ) {
         const users = await this._usuarioService.buscar();
         console.log(users)
@@ -42,16 +44,52 @@ export class UsuarioController {
             {
                 datos: {
                     users,
+                    mensaje,
                 },
             });
     }
 
     @Get('ruta/crear-usuario')
      rutaCrearUsuario(
+         @Query('error') error: string,
+         @Res() res,
+    ) {
+        res.render('usuario/routes/crear-usuario',
+            {datos: {
+                error
+                }});
+    }
+
+
+    @Get('ruta/editar-usuario/:idUsuario')
+    async rutaEditarUsuario(
+        @Query('error') error: string,
+        @Param('idUsuario') idUsuario: string,
         @Res() res,
     ) {
-        res.render('usuario/routes/crear-usuario')
+        const consulta = {
+
+                id: idUsuario
+
+        }
+        try{
+            const usuario = await this._usuarioService.buscar(consulta)
+            res.render('usuario/routes/crear-usuario',
+                {datos: {
+                        error,
+                        usuario: usuario[0],
+                    }});
+
+        } catch (e) {
+            console.log(e)
+            res.redirect('/usuario/rutas/mostrar-usuarios?error= error Editando usuario')
+
+        }
+
     }
+
+
+
 
     @Get('ejemploejs')
     ejemplosejs(
@@ -153,7 +191,8 @@ export class UsuarioController {
     async guardarUno(
         @Body() usuario: UsuarioEntity,
         @Session() sesion,
-    ): Promise<UsuarioEntity | undefined> {
+        @Res() res,
+    ): Promise<void> {
         if (sesion.usuario) {
             const rol = sesion.usuario.roles.find( r => r === 'Administrador' );
             if (rol) {
@@ -162,12 +201,24 @@ export class UsuarioController {
                 usuarioCreateDto.cedula = usuario.cedula;
 
                 const errores = await validate(usuarioCreateDto);
-                console.log(errores);
+                console.log('errores', errores);
                 if (errores.length > 0) {
-                    throw new BadRequestException('Error validando');
+                   //  throw new BadRequestException('Error validando');
+                     res.redirect('usuario/ruta/crear-usuario?error=Error Validando');
                 } else {
                     console.log(usuario);
-                    return this._usuarioService.guardarUno(usuario);
+                    try {
+                        await this._usuarioService.guardarUno(usuario);
+
+                        res.redirect('/usuario/ruta/mostrar-usuarios?mensaje=Guardado con exito');
+
+                    } catch (e) {
+                        console.log(e)
+                        res.redirect('/usuario/ruta/crear-usuario?error=Error del servidor')
+
+                    }
+
+
                 }
 
 
@@ -246,6 +297,44 @@ export class UsuarioController {
 
     }
 
+
+    @Post(':id')
+    async eliminarPost(
+        @Param('id') id: string,
+        @Session() sesion,
+        @Res() res,
+
+    ): Promise<void> {
+
+        if (sesion.usuario) {
+            const rol = sesion.usuario.roles.find( r => r === 'Administrador' );
+            if (rol) {
+                try {
+                    await this._usuarioService
+                        .borrarUno(
+                            +id,
+                        );
+                    res.redirect(`/usuario/ruta/mostrar-usuarios?mensaje=Usuario ID ${id} eliminado`)
+                }catch (e) {
+                    console.log(e)
+                    res.redirect('/usuario/ruta/mostrar-usuarios?mensaje=Error del servidor')
+
+                }
+
+
+            } else {
+                throw new BadRequestException('Debes ser administrador para eliminar un usuario');
+            }
+
+        } else {
+            throw new BadRequestException('Debes estar logueado');
+        }
+
+
+
+
+    }
+
     @Get()
       buscar(
       @Query('skip') skip?: string | number,
@@ -272,21 +361,7 @@ export class UsuarioController {
         }
         if (skip) {
             skip = +skip;
-            /* const nuevoEsquema = Joi.object({
-                skip: Joi.number(),
-            });
 
-            try {
-              const objetoValido = await nuevoEsquema
-                .validateAsync({
-                    skip: skip,
-                });
-                console.log('objecto valido', objetoValido);
-            } catch (e) {
-                console.log('error',e);
-            }
-
-             */
         }
         if (take) {
             take = +take;
