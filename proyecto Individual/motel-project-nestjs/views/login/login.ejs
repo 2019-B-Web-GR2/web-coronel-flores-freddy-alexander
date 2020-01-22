@@ -1,0 +1,61 @@
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <%- include('../shared/header-navbar')%>
+
+    <br>
+
+    <main class="mdl-layout__content">
+        <div class="page-content">
+            <div class="container">
+
+                    <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                        <div class="mdl-card__title">
+                            <h2 class="mdl-card__title-text">Login</h2>
+                        </div>
+
+                        <div class="mdl-card__supporting-text">
+                            <form action="/login"
+                                  method="POST">
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input
+                                            class="mdl-textfield__input"
+                                            type="text"
+                                            id="usernameId"
+                                            name="username">
+                                    <label
+                                            class="mdl-textfield__label"
+                                            for="usernameId">Username</label>
+                                </div>
+
+                                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                    <input
+                                            class="mdl-textfield__input"
+                                            type="password"
+                                            id="passwordI"
+                                            name="password">
+                                    <label class="mdl-textfield__label" for="passwordI">Password</label>
+                                </div>
+
+                                <br>
+
+                                <button
+                                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                        type="submit">
+                                        Login
+                                </button>
+
+
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+        </div>
+    </main>
+<%- include('../shared/footer')%>
+</div>

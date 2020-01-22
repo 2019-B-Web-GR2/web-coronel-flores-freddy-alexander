@@ -6,6 +6,7 @@ import * as session from 'express-session';
 const FileStore = require('session-file-store')(session)
 async function bootstrap() {
   const app = await NestFactory.create(AppModule) as any;
+  app.set('view engine', 'ejs');
   app.use(
     session({
       name: 'server-session-id',

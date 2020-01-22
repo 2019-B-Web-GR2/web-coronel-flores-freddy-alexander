@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -28,4 +28,12 @@ export class AppController {
     }
     return 'Bad credentials'
   }
+
+  @Get('/ruta/login')
+  loginView(
+    @Res() res,
+  ) {
+    res.render('login/login');
+  }
+
 }

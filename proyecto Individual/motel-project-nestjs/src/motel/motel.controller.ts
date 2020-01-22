@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Session } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query, Res, Session } from '@nestjs/common';
 import { MotelEntity } from './motel.entity';
 import { MotelService } from './motel.service';
 import { log } from 'util';
@@ -105,6 +105,21 @@ export class MotelController {
       order,
     );
   }
+  // views should be here, after the endpoints
+
+  @Get('/ruta/mostrar-moteles')
+  async mostrarTabla(
+    @Res() res,
+  ) {
+    const moteles = await this.motelService.search();
+    res.render('motel/routes/buscar-mostrar-tabla', {
+      datos: {
+        message: 'hello',
+        moteles,
+      }
+    });
+  }
+
 
 
 }

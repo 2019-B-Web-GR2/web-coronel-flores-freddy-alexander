@@ -1,0 +1,56 @@
+
+
+
+
+<table  width="60%" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th class="mdl-data-table__cell--non-numeric">Nombre</th>
+        <th>Direccion</th>
+        <th>zip code</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+       <% moteles.forEach( (motel) => { %>
+        <tr>
+            <td><%= motel.id %></td>
+            <td class="mdl-data-table__cell--non-numeric"> <%= motel.nombre %> </td>
+            <td><%= motel.direccion %></td>
+            <td><%= motel.zipcode %> </td>
+            <td>
+
+
+                <button class="mdl-button mdl-js-button mdl-button--primary">
+                    <i class="material-icons">airline_seat_flat</i>
+                    Ver cuartos
+                </button>
+
+                <form action="/"
+                      method="get"  >
+                    <button class="mdl-button mdl-js-button mdl-button--primary"
+                            type="submit">
+                        <i class="material-icons">edit</i>
+                        Editar
+                    </button>
+
+                </form>
+
+                <form action="/"
+                      method="get">
+                    <button
+                            class="mdl-button mdl-js-button mdl-button--accent"
+                            type="submit">
+                        <i class="material-icons">delete_forever</i>
+                        eliminar
+
+                    </button>
+                </form>
+
+
+            </td>
+        </tr>
+    <%});%>
+    </tbody>
+</table>
