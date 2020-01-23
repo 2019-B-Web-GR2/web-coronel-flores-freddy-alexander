@@ -4,6 +4,7 @@ import { MotelService } from './motel.service';
 import { log } from 'util';
 import { MotelCreateDto } from './motel.create-dto';
 import { validate } from 'class-validator';
+import { tryCatch } from 'rxjs/internal-compatibility';
 
 @Controller('motel')
 export class MotelController {
@@ -110,16 +111,57 @@ export class MotelController {
   @Get('/ruta/mostrar-moteles')
   async mostrarTabla(
     @Res() res,
+    @Query('error') error: string,
   ) {
     const moteles = await this.motelService.search();
     res.render('motel/routes/buscar-mostrar-tabla', {
       datos: {
         message: 'hello',
         moteles,
+        error,
       }
     });
   }
 
+  @Get('/ruta/add-motel')
+  newMotelRoute(
+    @Res() res,
+  ) {
+    res.render('motel/routes/add-motel');
+  }
+
+  @Post('/guardar-uno')
+  async guardarUno(
+    @Res() res,
+    @Body() motel: MotelEntity,
+    @Session() session,
+  ) {
+    if (session.user) {
+      const  motelCreateDto = new MotelCreateDto();
+      motelCreateDto.nombre = motel.nombre;
+      motelCreateDto.direccion = motel.direccion;
+      motelCreateDto.zipcode = motel.zipcode;
+      const errores = await validate(motelCreateDto);
+      if (errores.length > 0) {
+
+        res.redirect('motel/ruta/mostrar-moteles?error=errores');
+      } else {
+        // tslint:disable-next-line:no-shadowed-variable
+        try {
+          const motelGuardado = await this.motelService.saveOne(motel);
+          console.log(motelGuardado);
+          res.redirect('ruta/mostrar-moteles');
+
+        } catch (e) {
+          console.log(e);
+          res.redirect('ruta/mostrar-moteles?error=No se pudo ingresar try error');
+        }
+
+      }
+    }
+    res.redirect('ruta/mostrar-moteles?error=debes estar logueado');
+
+  }
 
 
 }

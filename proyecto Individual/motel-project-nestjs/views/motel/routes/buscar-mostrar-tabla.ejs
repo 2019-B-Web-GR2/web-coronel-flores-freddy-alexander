@@ -3,13 +3,29 @@
     <%- include('../../shared/header-navbar')%>
 
 
+
     <main class="mdl-layout__content">
         <div class="page-content">
             <br>
+            <form  action="/motel/ruta/add-motel"
+                  method="get">
+                <button
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                        type="submit">
+                    <i class="material-icons">add</i>
+                    Nuevo Motel
+                </button>
+
+            </form>
+
             <div class="container">
                 <%- include('../components/mostrar-tabla',
                 {moteles: datos.moteles})%>
             </div>
+
+            <% if (datos.error) {%>
+                <p>error</p>
+            <%}%>
 
 
         </div>

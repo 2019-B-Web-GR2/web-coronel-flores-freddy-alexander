@@ -16,6 +16,7 @@ export class AppController {
     @Body('username') username: string,
     @Body('password') password: string,
     @Session() session,
+    @Res() res,
   ) {
     console.log('seesion', session);
     if (username === 'admin' && password === '1234') {
@@ -24,7 +25,7 @@ export class AppController {
         userId: 1,
         roles: ['Admin'],
       };
-      return  'ok'
+      res.redirect('motel/ruta/mostrar-moteles');
     }
     return 'Bad credentials'
   }

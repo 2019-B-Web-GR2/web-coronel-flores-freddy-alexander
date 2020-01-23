@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, Session } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomEntity } from './room.entity';
 import { RoomCreateDto } from './room.create-dto';
@@ -28,6 +28,16 @@ export class RoomController {
 
     }
 
+  }
+
+  // all views go here
+
+  @Get('ruta/mostrar-cuartos')
+  mostrarCuartos(
+    @Res() res,
+    @Query('motelId') motelId: string,
+  ) {
+     res.render('cuarto/routes/buscar-mostrar-tabla.ejs');
   }
 
 }

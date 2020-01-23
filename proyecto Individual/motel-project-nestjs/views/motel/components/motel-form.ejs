@@ -1,0 +1,61 @@
+
+
+
+
+            <div class="container">
+
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Motel Nuevo</h2>
+                    </div>
+
+                    <div class="mdl-card__supporting-text">
+                        <form action="/motel/guardar-uno"
+                              method="POST">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="text"
+                                        id="nombreId"
+                                        name="nombre">
+                                <label
+                                        class="mdl-textfield__label"
+                                        for="nombreId">Nombre</label>
+                                <span class="mdl-textfield__error">Letters and spaces only</span>
+                            </div>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="text"
+                                        id="direccionId"
+                                        name="direccion">
+                                <label class="mdl-textfield__label" for="direccionId">Direccion</label>
+                            </div>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="number"
+                                        id="zipcodeId"
+                                        name="zipcode">
+                                <label class="mdl-textfield__label" for="zipcodeIdId">Zipcode</label>
+                            </div>
+
+                            <br>
+
+                            <button
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                    type="submit">
+                                <i class="material-icons">save</i>
+                                Guardar
+                            </button>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
