@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import {UsuarioService} from "./usuario.service";
 import {UsuarioEntity} from "./usuario.entity";
-import { DeleteResult } from 'typeorm';
+import {DeleteResult, Like} from 'typeorm';
 import * as Joi from '@hapi/joi';
 import { UsuarioCreateDto } from './usuario.create-dto';
 import { validate } from 'class-validator';
@@ -36,9 +36,22 @@ export class UsuarioController {
     @Get('ruta/mostrar-usuarios')
     async mostrarUsuarios(
          @Res() res,
-         @Query('mensaje') mensaje: string
+         @Query('mensaje') mensaje: string,
+         @Query('consultaUsuario') consutaUsuario: string
     ) {
-        const users = await this._usuarioService.buscar();
+        let consultaWhereLike;
+        if (consutaUsuario) {
+            consultaWhereLike = [
+                {
+                    nombre: Like('%' + consutaUsuario + '%'),
+                },
+                {
+                    cedula: Like('%' + consutaUsuario + '%'),
+                },
+            ];
+        }
+
+        const users = await this._usuarioService.buscar(consultaWhereLike);
         console.log(users)
         res.render('usuario/routes/buscar-mostrar-tabla',
             {
@@ -69,16 +82,28 @@ export class UsuarioController {
     ) {
         const consulta = {
 
-                id: idUsuario
+                id: +idUsuario,
 
         }
-        try{
-            const usuario = await this._usuarioService.buscar(consulta)
-            res.render('usuario/routes/crear-usuario',
-                {datos: {
-                        error,
-                        usuario: usuario[0],
-                    }});
+        try {
+            const usuario = await this._usuarioService.buscar(consulta);
+            console.log(usuario);
+            if (usuario.length > 0) {
+                res.render('usuario/routes/crear-usuario',
+                    {datos: {
+                            error,
+                            usuario: usuario[0],
+                        }});
+
+            } else {
+              //  res.status(400);
+              //  res.send('ERROR ENCONTRANDO USUARIO');
+                res.redirect(
+                    '/usuario/ruta/mostrar-usuarios?error=No existe ese usuario',
+                );
+            }
+
+
 
         } catch (e) {
             console.log(e)
@@ -232,12 +257,13 @@ export class UsuarioController {
 
     }
 
-    @Put(':id')
+    @Post(':id')
     async  actualizarUnUsuario(
       @Body() usuario: UsuarioEntity,
       @Param('id') id: string,
       @Session() sesion,
-     ): Promise<UsuarioEntity> {
+      @Res() res,
+     ): Promise<void> {
         if (sesion.usuario) {
             const rol = sesion.usuario.roles.find( r => r === 'Administrador' || r === 'Supervisor' );
             if (rol) {
@@ -248,14 +274,18 @@ export class UsuarioController {
                 const errores = await validate(usuarioUpdateDto);
                 if (errores.length > 0) {
                     console.log(errores);
-                    throw new BadRequestException('Error validando');
+                    // throw new BadRequestException('Error validando');
+                    res.redirect(
+                        '/usuario/ruta/editar-usuario/' + id + '?error=Usuario no validado',
+                    )
                 } else {
-                    return this._usuarioService.actualizarUno(+id, usuario);
+                    await this._usuarioService.actualizarUno(+id, usuario);
+                    res.redirect('/usuario/ruta/mostrar-usuarios?mensaje=usuario ' + usuario.nombre + 'actualizado');
                 }
 
 
             } else {
-                throw new BadRequestException('Debes ser administrador para editar un usuario');
+                // throw new BadRequestException('Debes ser administrador para editar un usuario');
             }
 
         } else {

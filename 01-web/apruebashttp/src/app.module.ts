@@ -6,10 +6,13 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {UsuarioEntity} from "./usuario/usuario.entity";
 import {UsuarioModule} from "./usuario/usuario.module";
 import {UsuarioService} from "./usuario/usuario.service";
+import {MascotasModule} from "./mascotas/mascotas.module";
+import {MascotasEntity} from "./mascotas/mascotas.entity";
 
 @Module({
   imports: [
       UsuarioModule,
+      MascotasModule,
       TypeOrmModule.forRoot({
       name: 'default', // nombre de la cadena de conexion
       type: 'mysql',
@@ -21,6 +24,7 @@ import {UsuarioService} from "./usuario/usuario.service";
       database: 'web',
       entities: [
           UsuarioEntity,
+          MascotasEntity
       ],
       synchronize: true,
     }),

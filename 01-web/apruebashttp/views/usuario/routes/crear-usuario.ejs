@@ -2,6 +2,7 @@
 
 <%- include('../../compartido/cabecera')  %>
 
+<% const estaEditando = datos.usuario != undefined; %>
 
 <div class="container">
     <% if(datos.error) { %>
@@ -12,9 +13,9 @@
     <%}%>
 
 
-    <h1>crear usuario</h1>
+    <h1> <%= estaEditando? 'Editando '+datos.usuario.nombre : 'crear usuario' %></h1>
 
-    <form action="/usuario"
+    <form action="/usuario/<%= estaEditando? datos.usuario.id : '' %>"
           method="POST">
 
         <div class="form-group">
@@ -24,6 +25,7 @@
                     name="nombre"
                     class="form-control"
                     title="Ingresar Nombre"
+                    value="<%= estaEditando? datos.usuario.nombre : ''%>"
                     placeholder="Ej: Alexander Coronel"
             >
 
@@ -42,6 +44,8 @@
                     class="form-control"
                     title="Ingresar Cedula"
                     placeholder="Ej: 645484"
+                    <%= estaEditando? 'disabled' : ''%>
+                    value="<%= estaEditando? datos.usuario.cedula : ''%>"
             >
 
             <small id="cedulaIDHelp"

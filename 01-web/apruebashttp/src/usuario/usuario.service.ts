@@ -73,8 +73,7 @@ export  class UsuarioService {
             id: 30,
         };
 
-        return this._repositorioUsuario.find(
-        );
+        return this._repositorioUsuario.find( { where: whereNormal, skip: skip1, take: take1, order: order1 });
     }
 
 }

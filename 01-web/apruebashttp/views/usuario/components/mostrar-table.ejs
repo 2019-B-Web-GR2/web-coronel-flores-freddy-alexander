@@ -20,11 +20,18 @@
         <td><%= user.nombre %></td> <!-- table detail -->
         <td> <%= user.cedula %> </td>
         <td>
-            <button
-                    type="button"
-                    class="btn btn-info">
-                Editar
-            </button>
+
+            <form
+                    action="/usuario/ruta/editar-usuario/<%= user.id %>"
+                    method="GET"    >
+                <button
+                        type="submit"
+                        class="btn btn-info">
+                    Editar
+                </button>
+
+            </form>
+
 
             <form action="/usuario/<%= user.id %>"
                   method="POST">
