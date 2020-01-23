@@ -1,1 +1,52 @@
 <p> mostrar tabla de cuartos </p>
+
+
+<table  width="60%" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th class="mdl-data-table__cell--non-numeric">Tipo de Habitacion</th>
+        <th>precio</th>
+        <th>ocupada</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% rooms.forEach( (room) => { %>
+        <tr>
+            <td><%= room.id %></td>
+            <td class="mdl-data-table__cell--non-numeric"> <%= room.tipoHabitacion %> </td>
+            <td><%= room.precio %></td>
+            <td><%= motel.ocupada %> </td>
+            <td>
+
+
+
+
+                <form action="/"
+                      method="get"  >
+                    <button class="mdl-button mdl-js-button mdl-button--primary"
+                            type="submit">
+                        <i class="material-icons">edit</i>
+                        Editar
+                    </button>
+
+                </form>
+
+                <form action="/"
+                      method="get">
+                    <button
+                            class="mdl-button mdl-js-button mdl-button--accent"
+                            type="submit">
+                        <i class="material-icons">delete_forever</i>
+                        eliminar
+
+                    </button>
+                </form>
+
+
+            </td>
+        </tr>
+    <%});%>
+    </tbody>
+</table>

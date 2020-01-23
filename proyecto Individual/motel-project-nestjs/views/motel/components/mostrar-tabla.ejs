@@ -22,10 +22,13 @@
             <td>
 
 
-                <button class="mdl-button mdl-js-button mdl-button--primary">
-                    <i class="material-icons">airline_seat_flat</i>
-                    Ver cuartos
-                </button>
+                <form action="/room/ruta/mostrar-cuartos/<%= motel.id %>"
+                      method="GET"  >
+                    <button class="mdl-button mdl-js-button mdl-button--primary">
+                        <i class="material-icons">airline_seat_flat</i>
+                        Ver cuartos
+                    </button>
+                </form>
 
                 <form action="/"
                       method="get"  >

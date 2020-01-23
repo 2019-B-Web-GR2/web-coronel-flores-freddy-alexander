@@ -1,13 +1,16 @@
-import { Body, Controller, Get, Post, Query, Res, Session } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res, Session } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { RoomEntity } from './room.entity';
 import { RoomCreateDto } from './room.create-dto';
+import { writeHeapSnapshot } from 'v8';
+import { MotelService } from '../motel/motel.service';
 
 @Controller('room')
 export class RoomController {
 
   constructor(
-    private readonly roomService: RoomService
+    private readonly roomService: RoomService,
+    private readonly motelService: MotelService,
   ) {
   }
   @Get('/test')
@@ -32,12 +35,20 @@ export class RoomController {
 
   // all views go here
 
-  @Get('ruta/mostrar-cuartos')
-  mostrarCuartos(
+  @Get('ruta/mostrar-cuartos/:motelId')
+  async mostrarCuartos(
     @Res() res,
-    @Query('motelId') motelId: string,
+    @Param('motelId') motelId: string,
   ) {
-     res.render('cuarto/routes/buscar-mostrar-tabla.ejs');
+     console.log('motelId?', motelId);
+
+     const motel = await this.motelService.getOne(+motelId);
+     console.log('motel?', motel);
+     res.render('cuarto/routes/buscar-mostrar-tabla.ejs',{
+       datos: {
+         rooms: motel.rooms ?  motel.rooms : [],
+       }
+     });
   }
 
 }

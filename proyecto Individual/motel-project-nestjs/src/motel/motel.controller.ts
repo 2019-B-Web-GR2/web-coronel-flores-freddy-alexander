@@ -113,6 +113,7 @@ export class MotelController {
     @Res() res,
     @Query('error') error: string,
   ) {
+    console.log('error direccionando', error)
     const moteles = await this.motelService.search();
     res.render('motel/routes/buscar-mostrar-tabla', {
       datos: {
@@ -141,9 +142,10 @@ export class MotelController {
       motelCreateDto.nombre = motel.nombre;
       motelCreateDto.direccion = motel.direccion;
       motelCreateDto.zipcode = motel.zipcode;
+      motel.rooms = [];
       const errores = await validate(motelCreateDto);
       if (errores.length > 0) {
-
+        console.log('errros validar', errores);
         res.redirect('motel/ruta/mostrar-moteles?error=errores');
       } else {
         // tslint:disable-next-line:no-shadowed-variable
@@ -153,7 +155,7 @@ export class MotelController {
           res.redirect('ruta/mostrar-moteles');
 
         } catch (e) {
-          console.log(e);
+          console.log('error try catch',e);
           res.redirect('ruta/mostrar-moteles?error=No se pudo ingresar try error');
         }
 
