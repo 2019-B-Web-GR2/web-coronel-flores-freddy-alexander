@@ -28,21 +28,20 @@ export class RoomService {
   }
 
   search(
-    where: any = {},
-    skip: number= 0,
-    take: number= 10,
-    order: any = {
-      id: 'DESC',
-      nombre: 'ASC',
+    whereNormal: any = {},
+    skip1: number = 0,
+    take1: number = 10,
+    order1: any = {
+      id: 'ASC'
     },
   ): Promise<RoomEntity[]> {
 
     return  this.roomRepository.find(
       {
-        where,
-        skip,
-        take,
-        order
+        where: whereNormal,
+        skip: skip1 ,
+        take: take1,
+        order: order1
       },
     );
   }

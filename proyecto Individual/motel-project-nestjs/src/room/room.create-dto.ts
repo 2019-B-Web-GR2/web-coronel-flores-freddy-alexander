@@ -10,7 +10,7 @@ export class RoomCreateDto {
   @IsNumber()
   precio: number;
 
-  @IsNotEmpty()
+
   @IsBoolean()
   ocupada: boolean;
 

@@ -18,7 +18,7 @@ import { MotelService } from './motel/motel.service';
       port: 32769,
       username: 'root',
       password: 'alex1995',
-      dropSchema: true,
+      dropSchema: false,
       database: 'moteldb',
       entities: [
         RoomEntity,

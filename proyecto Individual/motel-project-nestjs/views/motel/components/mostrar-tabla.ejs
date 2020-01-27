@@ -30,7 +30,7 @@
                     </button>
                 </form>
 
-                <form action="/"
+                <form action="/motel/ruta/editar-motel/<%= motel.id %>"
                       method="get"  >
                     <button class="mdl-button mdl-js-button mdl-button--primary"
                             type="submit">
@@ -40,8 +40,8 @@
 
                 </form>
 
-                <form action="/"
-                      method="get">
+                <form action="/motel/<%= motel.id %>"
+                      method="post">
                     <button
                             class="mdl-button mdl-js-button mdl-button--accent"
                             type="submit">

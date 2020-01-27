@@ -6,13 +6,30 @@
     <main class="mdl-layout__content">
         <div class="page-content">
             <br>
+
+            <% if (datos.error) {%>
+
+                <div class="container" >
+                    <div class="alert-error">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <%= datos.error %>
+                    </div>
+                </div>
+
+
+            <%}%>
+
+
+
+            <br>
             <div class="container">
-                <%- include('../components/motel-form')%>
+                <%- include('../components/motel-form' ,{motel: datos.motel}) %>
             </div>
 
 
         </div>
+        <%- include('../../shared/footer')%>
     </main>
 
-    <%- include('../../shared/footer')%>
+
 </div>

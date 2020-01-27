@@ -1,4 +1,4 @@
-
+<% const isEditing = motel != undefined %>
 
 
 
@@ -6,22 +6,24 @@
 
                 <div class="demo-card-wide mdl-card mdl-shadow--2dp">
                     <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Motel Nuevo</h2>
+                        <h2 class="mdl-card__title-text"><%= isEditing? motel.nombre : 'Motel Nuevo' %></h2>
                     </div>
 
                     <div class="mdl-card__supporting-text">
-                        <form action="/motel/guardar-uno"
+                        <form action="/motel/guardar-uno<%= isEditing? '/'+motel.id : '' %>"
                               method="POST">
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                 <input
                                         class="mdl-textfield__input"
                                         type="text"
                                         id="nombreId"
-                                        name="nombre">
+                                        name="nombre"
+                                        value="<%= isEditing? motel.nombre : ''%>">
+
                                 <label
                                         class="mdl-textfield__label"
                                         for="nombreId">Nombre</label>
-                                <span class="mdl-textfield__error">Letters and spaces only</span>
+
                             </div>
 
                             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -29,7 +31,8 @@
                                         class="mdl-textfield__input"
                                         type="text"
                                         id="direccionId"
-                                        name="direccion">
+                                        name="direccion"
+                                        value="<%= isEditing? motel.direccion : ''%>">
                                 <label class="mdl-textfield__label" for="direccionId">Direccion</label>
                             </div>
 
@@ -38,7 +41,8 @@
                                         class="mdl-textfield__input"
                                         type="number"
                                         id="zipcodeId"
-                                        name="zipcode">
+                                        name="zipcode"
+                                        value="<%= isEditing? motel.zipcode : ''%>">
                                 <label class="mdl-textfield__label" for="zipcodeIdId">Zipcode</label>
                             </div>
 
@@ -47,8 +51,8 @@
                             <button
                                     class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
                                     type="submit">
-                                <i class="material-icons">save</i>
-                                Guardar
+                                <i class="material-icons"><%= isEditing? 'update':'save'%></i>
+                                <%= isEditing? 'Actualizar' : 'Guardar' %>
                             </button>
 
 

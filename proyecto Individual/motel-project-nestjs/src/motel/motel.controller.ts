@@ -111,8 +111,9 @@ export class MotelController {
   @Get('/ruta/mostrar-moteles')
   async mostrarTabla(
     @Res() res,
-    @Query('error') error: string,
-  ) {
+    @Query('error') error?: string,
+    @Query('mensaje') mensaje?: string,
+    ) {
     console.log('error direccionando', error)
     const moteles = await this.motelService.search();
     res.render('motel/routes/buscar-mostrar-tabla', {
@@ -120,6 +121,7 @@ export class MotelController {
         message: 'hello',
         moteles,
         error,
+        mensaje,
       }
     });
   }
@@ -127,8 +129,13 @@ export class MotelController {
   @Get('/ruta/add-motel')
   newMotelRoute(
     @Res() res,
+    @Query('error') error?: string,
   ) {
-    res.render('motel/routes/add-motel');
+    res.render('motel/routes/add-motel',{
+      datos: {
+        error,
+      }
+    });
   }
 
   @Post('/guardar-uno')
@@ -146,24 +153,110 @@ export class MotelController {
       const errores = await validate(motelCreateDto);
       if (errores.length > 0) {
         console.log('errros validar', errores);
-        res.redirect('motel/ruta/mostrar-moteles?error=errores');
+        res.redirect('/motel/ruta/add-motel?error=error al validar datos');
       } else {
         // tslint:disable-next-line:no-shadowed-variable
         try {
           const motelGuardado = await this.motelService.saveOne(motel);
           console.log(motelGuardado);
-          res.redirect('ruta/mostrar-moteles');
+          res.redirect('/motel/ruta/mostrar-moteles?mensaje=Nuevo Motel Guardado');
 
         } catch (e) {
           console.log('error try catch',e);
-          res.redirect('ruta/mostrar-moteles?error=No se pudo ingresar try error');
+          res.redirect('motel/ruta/add-motel?error=No se pudo ingresar try error');
         }
 
       }
     }
-    res.redirect('ruta/mostrar-moteles?error=debes estar logueado');
+    res.redirect('motel/ruta/mostrar-moteles?error=debes estar logueado');
+
+  }
+ @Post(':id')
+  async eliinarPost(
+    @Param('id') id: string,
+    @Res() res,
+ ) {
+    try {
+      await this.motelService.deleteOne(+id);
+      res.redirect('/motel/ruta/mostrar-moteles?mensaje=eliminado un motel');
+    } catch (e) {
+      res.redirect('/motel/ruta/mostrar-moteles?mensaje=eliminado un motel');
+    }
+ }
+
+ @Get('ruta/editar-motel/:idMotel')
+  async rutaEditarMotel(
+
+    @Param('idMotel') idMotel: string,
+    @Res() res,
+    @Query('error') error?: string,
+
+  ) {
+    console.log(error)
+    const consulta = {
+      id: +idMotel,
+    };
+    try {
+      const motel = await this.motelService.search(consulta);
+      if (motel.length > 0) {
+        res.render(
+          'motel/routes/add-motel',
+          {
+            datos: {
+              error,
+              motel: motel[0],
+            },
+          });
+
+      } else {
+        res.redirect(
+          '/motel/ruta/mostrar-moteles?error=No existe este motel',
+      );
+      }
+    } catch (e) {
+      res.redirect(
+        '/motel/ruta/mostrar-moteles?error=Error editando motel',
+      );
+    }
+
+ }
+  @Post('/guardar-uno/:id')
+  async actualizarMotel(
+    @Body() motel: MotelEntity,
+    @Param('id') id: string,
+    @Res() res,
+  ) {
+
+    const  motelUpdateDto = new MotelCreateDto();
+    motelUpdateDto.nombre = motel.nombre;
+    motelUpdateDto.direccion = motel.direccion;
+    motelUpdateDto.zipcode = motel.zipcode;
+    motel.id = +id;
+
+    const errores = await validate(motelUpdateDto);
+    if (errores.length > 0) {
+      console.log('entro aqui? errros validar', errores);
+      // console.log(`/motel/ruta/editar-motel/${}?error=error al validar datos`)
+      res.redirect(`/motel/ruta/editar-motel/${motel.id}?error=error al validar datos`);
+    } else {
+      // tslint:disable-next-line:no-shadowed-variable
+      try {
+        const motelGuardado = await this.motelService.updateOne(+id, motel);
+        // console.log(motelGuardado);
+        res.redirect(`/motel/ruta/mostrar-moteles?mensaje=Motel ${motel.nombre} actualizado`);
+
+      } catch (e) {
+        console.log('error try catch',e);
+        res.redirect(`/motel/ruta/editar-motel/${motel.id}?error=error try catch`);
+      }
+
+    }
 
   }
 
 
 }
+
+
+
+

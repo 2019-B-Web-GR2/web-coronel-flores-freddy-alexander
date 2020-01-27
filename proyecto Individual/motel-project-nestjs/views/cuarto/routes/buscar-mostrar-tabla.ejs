@@ -3,8 +3,21 @@
     <%- include('../../shared/header-navbar')%>
 
 
+<% console.log(datos) %>
+
+
     <main class="mdl-layout__content">
         <div class="page-content">
+            <br>
+            <a  href="/room/ruta/add-cuarto?motelId=<%= datos.motelId %>">
+                <button
+                        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                        type="submit">
+                    <i class="material-icons">add</i>
+                    Nuevo Cuarto
+                </button>
+
+            </a>
             <br>
             <div class="container">
                 <%- include('../components/mostrar-tabla',
@@ -13,6 +26,8 @@
 
 
         </div>
+
+
     </main>
 
     <%- include('../../shared/footer')%>

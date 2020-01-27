@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Res, Session } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Res, Session } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -16,7 +16,7 @@ export class AppController {
     @Body('username') username: string,
     @Body('password') password: string,
     @Session() session,
-    @Res() res,
+     @Res() res,
   ) {
     console.log('seesion', session);
     if (username === 'admin' && password === '1234') {
@@ -27,14 +27,19 @@ export class AppController {
       };
       res.redirect('motel/ruta/mostrar-moteles');
     }
-    return 'Bad credentials'
+    res.redirect('/ruta/login?error=Credenciales Invalidas');
   }
 
   @Get('/ruta/login')
   loginView(
     @Res() res,
+    @Query('error') error?: string,
   ) {
-    res.render('login/login');
+    res.render('login/login',{
+      datos: {
+        error,
+      }
+    });
   }
 
 }

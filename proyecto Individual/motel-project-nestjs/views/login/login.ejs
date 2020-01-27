@@ -5,7 +5,20 @@
     <br>
 
     <main class="mdl-layout__content">
+
+
         <div class="page-content">
+            <% if (datos.error) {%>
+
+                <div class="container" >
+                    <div class="alert-error">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <%= datos.error %>
+                    </div>
+                </div>
+
+
+            <%}%>
             <div class="container">
 
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
