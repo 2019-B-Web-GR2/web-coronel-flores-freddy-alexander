@@ -11,6 +11,108 @@
 
 <div class="container">
 
+    <select name="provincias"
+            id="provincias"
+            onchange="cargarCiudades()"
+    >
+        <option value="1">Pichincha</option>
+        <option value="2">Guayas</option>
+    </select>
+    <div id="contenedorCiudades"></div>
+    <button onclick="addParagraph()">
+        Hola Mundo
+    </button>
+
+
+    <div id="contenedor">
+
+    </div>
+
+    <script>
+        function cargarCiudades() {
+            const etiquetaProvincias = document.getElementById('provincias');
+            const idCiudad = etiquetaProvincias.value;
+            fetch('/pepito/ciudades/' + idCiudad, {
+                method: 'GET', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then( // OK
+                    (arregloCiudadString) => {
+                        return arregloCiudadString.json();
+                    }
+                )
+                .then(
+                    (arregloJson) => {
+                        let opciones = ''
+                        arregloJson
+                            .forEach(
+                                (ciudad) => {
+                                    opciones = opciones +
+                                        `<option value="${ciudad.id}">${ciudad.nombre}</option>`;
+                                });
+                        const ciudadPichincha = [
+                            {id: 1, nombre: 'Quito'},
+                            {id: 3, nombre: 'Machachi'}
+                        ]
+                        const ciudadGuayas = [
+                            {id: 2, nombre: 'Guayaquil'},
+                            {id: 4, nombre: 'Duran'}
+                        ]
+                        const etiquetaContenedoraCiudades = document.getElementById('contenedorCiudades');
+
+                        const select = `
+            <select name="ciudad" id="ciudad">
+                ${opciones}
+            </select>
+            `;
+                        const etiquetaSelect = document.createElement('div');
+                        etiquetaSelect.innerHTML = select;
+                        const existeNodo = etiquetaContenedoraCiudades.childNodes[0];
+                        if (existeNodo) {
+                            etiquetaContenedoraCiudades.removeChild(existeNodo);
+                        }
+                        etiquetaContenedoraCiudades.appendChild(etiquetaSelect);
+                    }
+                )
+                .catch( // ERROR
+                    (error) => {
+                        console.error(error);
+                    }
+                )
+            console.log('CAMBIE :D');
+
+        }
+
+
+
+
+
+
+        function addParagraph() {
+            const elementoContenedor = document.getElementById('contenedor');
+            const nombreEtiqueta = 'div'
+            const urlImage = ''
+            const div = document.createElement(nombreEtiqueta);
+            div.innerHTML  = `
+            <div>
+                <img src="${urlImage}" alt="" width="200">
+                <p>Hola</p>
+                <button class="btn btn-info"
+                         onclick="addParagraph()" > Click me!</button>
+            </div>
+            `;
+            elementoContenedor.appendChild(div);
+
+        }
+        function holaMundo(EVENTO) {
+            console.log(EVENTO);
+            console.log('Hola Mundo');
+        }
+    </script>
+
+
 
     <form action="/usuario/ruta/mostrar-usuarios"
           method="GET">
@@ -65,3 +167,7 @@
 
 
 <%- include('../../compartido/pie-de-pagina')%>
+
+
+
+

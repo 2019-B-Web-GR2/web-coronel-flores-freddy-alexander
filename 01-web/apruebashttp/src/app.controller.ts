@@ -7,14 +7,46 @@ import {
   InternalServerErrorException,
   Param,
   Post,
-  Query, Res
+  Query, Res, UploadedFile, UseInterceptors
 } from '@nestjs/common';
 import { AppService } from './app.service';
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @Controller('pepito') // segemento url -> "/"
 export class AppController {
   count: number = 100;
   constructor(private readonly appService: AppService) {}
+
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file', {
+    limits: {
+      fieldSize: 20000
+    },
+    dest: './publico',
+  }))
+  subirArchivo( @UploadedFile('file') file ) {
+    console.log(file);
+    console.log(file.fileName);
+    return 'weee  ';
+
+  }
+  @Get('ciudades/:idCiudad')
+  ciudes(
+      @Param('idCiudad') idCiudad: string,
+  ) {
+    const ciudadPichincha = [
+      {id: 1, nombre: 'Quito'},
+    ];
+    const ciudadGuayas = [
+      {id: 2, nombre: 'Guayaquil'},
+    ];
+    if (idCiudad === '1') {
+      return ciudadPichincha;
+    }else {
+      return ciudadGuayas;
+    }
+  }
 
   @Get('hola-mundo') // -> url "/"
   getHello(): string {
