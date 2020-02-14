@@ -177,10 +177,15 @@ export class MotelController {
     @Res() res,
  ) {
     try {
-      await this.motelService.deleteOne(+id);
+
+
+      console.log('motelid? ', id);
+      const deleted = await this.motelService.deleteOne(+id);
+      console.log(deleted);
       res.redirect('/motel/ruta/mostrar-moteles?mensaje=eliminado un motel');
     } catch (e) {
-      res.redirect('/motel/ruta/mostrar-moteles?mensaje=eliminado un motel');
+      console.log('eerror ? ',e);
+      res.redirect('/motel/ruta/mostrar-moteles?mensaje=error eliminado un motel');
     }
  }
 

@@ -7,10 +7,19 @@ import { RoomEntity } from './room/room.entity';
 import { MotelModule } from './motel/motel.module';
 import { MotelEntity } from './motel/motel.entity';
 import { MotelService } from './motel/motel.service';
+import { UsuarioModule } from './usuario/usuario.module';
+import { UsuarioEntity } from './usuario/usuario.entity';
+import { CabeceraCarritoModule } from './cabeceraCarrito/cabeceraCarrito.module';
+import { CabeceraCarritoEntity } from './cabeceraCarrito/cabeceraCarrito.entity';
+import { DetalleCarritoModule } from './detalleCarrito/detalleCarrito.module';
+import { DetalleCarritoEntity } from './detalleCarrito/detalleCarrito.entity';
 
 @Module({
   imports: [RoomModule,
     MotelModule,
+    UsuarioModule,
+    CabeceraCarritoModule,
+    DetalleCarritoModule,
     TypeOrmModule.forRoot({
       name: 'default',
       type: 'mysql',
@@ -22,7 +31,11 @@ import { MotelService } from './motel/motel.service';
       database: 'moteldb',
       entities: [
         RoomEntity,
-        MotelEntity
+        MotelEntity,
+        UsuarioEntity,
+        CabeceraCarritoEntity,
+        DetalleCarritoEntity,
+
       ],
       synchronize: true
 

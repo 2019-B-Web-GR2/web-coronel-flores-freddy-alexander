@@ -64,9 +64,12 @@ export class RoomController {
     @Session() session,
     @Res() res,
     @Query('motelId') motelId?: string,
+     @Query('roomId') roomId?: string,
   ) {
-      console.log('motelId? ', motelId);
 
+      if (roomId) {
+        room.id = +roomId;
+      }
       room.ocupada = !room.ocupada === undefined ;
       room.precio = +room.precio;
       console.log('aqui llegue',room)
@@ -75,7 +78,7 @@ export class RoomController {
       roomCreateDto.precio = room.precio;
       roomCreateDto.ocupada = room.ocupada;
       const errores = await validate(roomCreateDto);
-      console.log(room);
+
       if (errores.length > 0) {
 
         console.log('errores? ', errores);
@@ -85,11 +88,12 @@ export class RoomController {
         try {
           const motel = await this.motelService.getOne(+motelId);
           room.motel = motel;
-          await  this.roomService.saveOne(room);
-          res.redirect('/room/ruta/mostrar-cuartos/' + motelId);
+          const cuartoGuardado = await  this.roomService.saveOne(room);
+          console.log('cuarto guardado ', cuartoGuardado);
+          res.redirect('/room/ruta/mostrar-cuartos/' + motelId + '?mensaje= que se yo');
         } catch (e) {
-          console.log('error? ',e);
-          res.redirect('/room/ruta/mostrar-cuartos/' + motelId + 'error= try catch');
+          console.log('error? ', e);
+          res.redirect('/room/ruta/mostrar-cuartos/' + motelId + '?error= try catch');
         }
       }
 
@@ -99,6 +103,52 @@ export class RoomController {
 
   }
 
+  @Get('editar-cuarto/:id/:motelId')
+  async editarCuarto(
+    @Param('id') id: string,
+    @Param('motelId') motelId: string,
+    @Res() res,
+  ){
+    try {
 
+      const cuarto = await this.roomService.findOne(+id);
+      console.log('cuarto? ', cuarto);
+      res.render('cuarto/routes/add-cuarto',{
+        datos: {
+          cuarto,
+          motelId,
+        },
+      });
 
+    } catch (e) {
+      console.log(e);
+     // res.redirect('')
+
+    }
+
+  }
+
+  @Post('editar')
+  editarForm(
+    @Body() cuarto: RoomEntity,
+  ) {
+
+  }
+
+  @Post('eliminar/:motelId')
+  async postEliminar(
+    @Query('roomId') roomId: string,
+    @Param('motelId') motelId: string,
+    @Res() res,
+  ) {
+
+    try {
+      await this.roomService.deleteOne(+roomId);
+      res.redirect('/room/ruta/mostrar-cuartos/' + motelId + '?mensaje= que se yo');
+    } catch (e) {
+      console.log('error', e);
+      res.redirect('/room/ruta/mostrar-cuartos/' + motelId + '?mensaje= que se yo');
+    }
+
+  }
 }
