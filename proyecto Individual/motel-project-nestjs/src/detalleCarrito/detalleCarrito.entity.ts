@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { CabeceraCarritoEntity } from '../cabeceraCarrito/cabeceraCarrito.entity';
+import { RoomEntity } from '../room/room.entity';
 
 @Entity('det_carrito')
 export class DetalleCarritoEntity {
@@ -30,4 +32,13 @@ export class DetalleCarritoEntity {
     name: 'subtotal',
   })
   subtotal: number;
+
+  @ManyToOne(type => CabeceraCarritoEntity, cabecera => cabecera.detalles)
+  cabecera: CabeceraCarritoEntity;
+
+  @ManyToOne(type => RoomEntity, room => room.detallesRoom)
+  room: RoomEntity;
+
+
+
 }

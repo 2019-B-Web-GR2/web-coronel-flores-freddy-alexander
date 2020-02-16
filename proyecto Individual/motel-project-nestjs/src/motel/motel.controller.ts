@@ -5,6 +5,7 @@ import { log } from 'util';
 import { MotelCreateDto } from './motel.create-dto';
 import { validate } from 'class-validator';
 import { tryCatch } from 'rxjs/internal-compatibility';
+import { SELF_DECLARED_DEPS_METADATA } from '@nestjs/common/constants';
 
 @Controller('motel')
 export class MotelController {
@@ -127,19 +128,21 @@ export class MotelController {
         error,
         mensaje,
         usuario,
-      },
+       },
     });
   }
 
   @Get('/ruta/add-motel')
   newMotelRoute(
     @Res() res,
+    @Session() session,
     @Query('error') error?: string,
   ) {
     res.render('motel/routes/add-motel',{
       datos: {
         error,
-      }
+        usuario: session.user,
+      },
     });
   }
 
@@ -199,6 +202,7 @@ export class MotelController {
 
     @Param('idMotel') idMotel: string,
     @Res() res,
+    @Session() session,
     @Query('error') error?: string,
 
   ) {
@@ -215,6 +219,7 @@ export class MotelController {
             datos: {
               error,
               motel: motel[0],
+              usuario: session.user,
             },
           });
 

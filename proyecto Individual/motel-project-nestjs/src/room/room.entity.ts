@@ -1,5 +1,6 @@
-import { Column, Entity, Index, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { MotelEntity } from '../motel/motel.entity';
+import { DetalleCarritoEntity } from '../detalleCarrito/detalleCarrito.entity';
 
 @Entity('room')
 export class RoomEntity {
@@ -33,15 +34,20 @@ export class RoomEntity {
   @Index({
     unique: false,
   })
+
   @Column({
     type: 'boolean',
     nullable: false,
-    name: 'ocupada'
+    name: 'ocupada',
   })
+
   ocupada: boolean;
 
   @ManyToOne(type => MotelEntity, motel => motel.rooms)
   motel: MotelEntity;
+
+  @OneToMany(type => DetalleCarritoEntity, detalleCarrito => detalleCarrito.room)
+  detallesRoom: DetalleCarritoEntity[];
 
 }
 

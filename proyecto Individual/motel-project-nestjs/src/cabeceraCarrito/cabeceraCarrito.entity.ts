@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { UsuarioEntity } from '../usuario/usuario.entity';
+import { DetalleCarritoEntity } from '../detalleCarrito/detalleCarrito.entity';
 
 @Entity('cab_carrito')
 export class CabeceraCarritoEntity {
@@ -17,7 +19,7 @@ export class CabeceraCarritoEntity {
   estado: string;
 
   @Column({
-    type: 'date',
+    type: 'varchar',
     nullable: false,
     name: 'fecha',
   })
@@ -27,8 +29,9 @@ export class CabeceraCarritoEntity {
     type: 'float',
     nullable: false,
     name: 'total',
+    default: 0,
   })
-  rol: number;
+  total: number;
 
   @Column({
     type: 'varchar',
@@ -36,6 +39,12 @@ export class CabeceraCarritoEntity {
     name: 'direccion',
   })
   direccion: string;
+
+  @ManyToOne(type => UsuarioEntity, usuario => usuario.cabeceras)
+  usuario: UsuarioEntity;
+
+  @OneToMany(type => DetalleCarritoEntity, detalleCarrito => detalleCarrito.cabecera)
+  detalles: DetalleCarritoEntity[];
 }
 
 

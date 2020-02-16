@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { CabeceraCarritoEntity } from '../cabeceraCarrito/cabeceraCarrito.entity';
 
 @Entity('usuario')
 export class UsuarioEntity {
@@ -28,4 +29,7 @@ export class UsuarioEntity {
   name: 'username',
 })
 username: string;
+
+@OneToMany(type => CabeceraCarritoEntity, cabeceraEntity => cabeceraEntity.usuario)
+  cabeceras: CabeceraCarritoEntity[];
 }

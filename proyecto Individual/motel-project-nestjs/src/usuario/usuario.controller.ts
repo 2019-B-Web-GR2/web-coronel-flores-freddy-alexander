@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Res, Session } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req, Res, Session } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { UsuarioEntity } from './usuario.entity';
 
@@ -7,6 +7,13 @@ export class UsuarioController {
 
   constructor(private readonly usuarioService: UsuarioService) {
 
+  }
+
+  @Get(':id')
+  getUsuario(
+    @Param('id') id: string,
+  ){
+    return this.usuarioService.getOne(+id);
   }
 
   @Get()
@@ -46,10 +53,23 @@ export class UsuarioController {
       res.redirect('/usuario/ruta/login?error=an error has occurred');
     }
   }
+  @Post('logout')
+  logout(
+    @Session() sesion,
+    @Req() req,
+    @Res() res,
+  ) {
+    sesion.user = undefined;
+    req.session.destroy();
+    console.log('si llegue al logout');
+    // return sesion;
+    res.redirect('/usuario/ruta/login');
+  }
 
   @Get('/ruta/login')
   loginView(
     @Res() res,
+    @Session() session,
     @Query('error') error?: string,
     @Query('mensaje') mensaje?: string,
   ) {
@@ -64,12 +84,13 @@ export class UsuarioController {
   @Get('/ruta/signup')
   signUpView(
     @Res() res,
+    @Session() session,
     @Query('error') error?: string,
   ) {
     res.render('login/signup',{
       datos: {
         error,
-      }
+      },
     });
 
   }
@@ -87,6 +108,8 @@ export class UsuarioController {
     }
 
   }
+
+
 
 
 

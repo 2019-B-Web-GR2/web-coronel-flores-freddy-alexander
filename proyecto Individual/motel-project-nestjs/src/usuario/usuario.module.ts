@@ -8,7 +8,7 @@ import { UsuarioService } from './usuario.service';
   imports: [
     TypeOrmModule.forFeature([UsuarioEntity], 'default'),
   ],
-  exports: [],
+  exports: [UsuarioService],
   providers: [UsuarioService],
   controllers: [UsuarioController],
 })
