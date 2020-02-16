@@ -15,4 +15,17 @@ export class UsuarioEntity {
     name: 'rol',
   })
   rol: string;
+  @Column({
+    type: 'varchar',
+    nullable: false,
+    name: 'password',
+  })
+  password: string;
+
+@Column({
+  type: 'varchar',
+  nullable: false,
+  name: 'username',
+})
+username: string;
 }

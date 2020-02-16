@@ -29,7 +29,8 @@
                         Ver cuartos
                     </button>
                 </form>
-
+                <% if (usuario) {%>
+                <% if (usuario.roles[0] === 'admin') {%>
                 <form action="/motel/ruta/editar-motel/<%= motel.id %>"
                       method="get"  >
                     <button class="mdl-button mdl-js-button mdl-button--primary"
@@ -49,8 +50,10 @@
                         eliminar
 
                     </button>
-                </form>
 
+                </form>
+                <%}%>
+              <%}%>
 
             </td>
         </tr>

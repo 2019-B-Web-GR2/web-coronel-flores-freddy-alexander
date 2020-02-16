@@ -111,10 +111,14 @@ export class MotelController {
   @Get('/ruta/mostrar-moteles')
   async mostrarTabla(
     @Res() res,
+    @Session() session,
     @Query('error') error?: string,
     @Query('mensaje') mensaje?: string,
+
     ) {
-    console.log('error direccionando', error)
+    // console.log('error direccionando', error);
+    const usuario = session.user;
+    console.log('usuario', usuario);
     const moteles = await this.motelService.search();
     res.render('motel/routes/buscar-mostrar-tabla', {
       datos: {
@@ -122,7 +126,8 @@ export class MotelController {
         moteles,
         error,
         mensaje,
-      }
+        usuario,
+      },
     });
   }
 

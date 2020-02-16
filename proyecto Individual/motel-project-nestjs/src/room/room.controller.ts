@@ -27,6 +27,7 @@ export class RoomController {
   async mostrarCuartos(
     @Res() res,
     @Param('motelId') motelId: string,
+    @Session() session,
   ) {
      console.log('motelId?', motelId);
 
@@ -35,11 +36,13 @@ export class RoomController {
      const rooms = await  this.roomService.search({
        motel: motel,
      });
+     const usuario = session.user;
      console.log('Get rooms?', rooms);
      res.render('cuarto/routes/buscar-mostrar-tabla.ejs',{
        datos: {
          rooms,
          motelId,
+         usuario,
        }
      });
   }

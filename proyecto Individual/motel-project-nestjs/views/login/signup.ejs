@@ -1,0 +1,85 @@
+
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <%- include('../shared/header-navbar')%>
+
+    <br>
+
+    <main class="mdl-layout__content">
+
+
+        <div class="page-content">
+            <% if (datos.error) {%>
+
+                <div class="container" >
+                    <div class="alert-error">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <%= datos.error %>
+                    </div>
+                </div>
+
+
+            <%}%>
+            <div class="container">
+
+                <div class="demo-card-wide mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Create an Account!</h2>
+                    </div>
+
+                    <div class="mdl-card__supporting-text">
+                        <form action="/usuario/signup"
+                              method="POST">
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="text"
+                                        id="usernameId"
+                                        name="username">
+                                <label
+                                        class="mdl-textfield__label"
+                                        for="usernameId">Username</label>
+                            </div>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="text"
+                                        id="rolId"
+                                        name="rol">
+                                <label class="mdl-textfield__label" for="roldId">Rol</label>
+                            </div>
+
+                            <br>
+
+                            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                <input
+                                        class="mdl-textfield__input"
+                                        type="password"
+                                        id="passwordId"
+                                        name="password">
+                                <label class="mdl-textfield__label" for="passwordId">Password</label>
+                            </div>
+
+                            <br>
+
+                            <button
+                                    class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+                                    type="submit">
+                                Sig Up
+                            </button>
+
+
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+    </main>
+    <%- include('../shared/footer')%>
+</div>

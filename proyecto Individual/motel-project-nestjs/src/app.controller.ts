@@ -11,35 +11,6 @@ export class AppController {
   }
 
 
-  @Post('login')
-  login(
-    @Body('username') username: string,
-    @Body('password') password: string,
-    @Session() session,
-     @Res() res,
-  ) {
-    console.log('seesion', session);
-    if (username === 'admin' && password === '1234') {
-      session.user = {
-        name: 'Alex',
-        userId: 1,
-        roles: ['Admin'],
-      };
-      res.redirect('motel/ruta/mostrar-moteles');
-    }
-    res.redirect('/ruta/login?error=Credenciales Invalidas');
-  }
 
-  @Get('/ruta/login')
-  loginView(
-    @Res() res,
-    @Query('error') error?: string,
-  ) {
-    res.render('login/login',{
-      datos: {
-        error,
-      }
-    });
-  }
 
 }

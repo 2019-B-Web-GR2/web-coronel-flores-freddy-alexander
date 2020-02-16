@@ -33,6 +33,8 @@
 
 
             <br>
+            <% if (datos.usuario) {%>
+               <%if (datos.usuario.roles[0] === 'admin'){%>
             <form  action="/motel/ruta/add-motel"
                   method="get">
                 <button
@@ -43,10 +45,12 @@
                 </button>
 
             </form>
+             <%}%>
+            <%}%>
 
             <div class="container">
                 <%- include('../components/mostrar-tabla',
-                {moteles: datos.moteles})%>
+                {moteles: datos.moteles, usuario: datos.usuario})%>
             </div>
 
             <% if (datos.error) {%>
@@ -55,9 +59,9 @@
 
 
         </div>
-        <%- include('../../shared/footer')%>
-    </main>
 
+    </main>
+    <%- include('../../shared/footer')%>
 
 </div>
 

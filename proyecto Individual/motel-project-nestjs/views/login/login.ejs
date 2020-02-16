@@ -19,6 +19,18 @@
 
 
             <%}%>
+
+                <% if (datos.mensaje) {%>
+
+                    <div class="container" >
+                        <div class="alert-succes">
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <%= datos.mensaje %>
+                        </div>
+                    </div>
+
+
+                <%}%>
             <div class="container">
 
                     <div class="demo-card-wide mdl-card mdl-shadow--2dp">
@@ -27,7 +39,7 @@
                         </div>
 
                         <div class="mdl-card__supporting-text">
-                            <form action="/login"
+                            <form action="/usuario/login"
                                   method="POST">
                                 <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                                     <input

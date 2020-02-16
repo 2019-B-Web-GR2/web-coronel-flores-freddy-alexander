@@ -18,8 +18,8 @@
             <td><%= room.ocupada %> </td>
             <td>
 
-
-
+              <% if (usuario) {%>
+                <% if (usuario.roles[0] === 'admin') {%>
 
                 <form action="/room/editar-cuarto/<%= room.id %>/<%= motelId %>"
                       method="get"  >
@@ -42,7 +42,20 @@
                     </button>
                 </form>
 
+                 <%} else {%>
+                    <form action="/room/eliminar/<%=motelId+'?roomId='+room.id%>"
+                          method="POST">
+                        <button
+                                class="mdl-button mdl-js-button mdl-button--primary"
+                                type="submit">
+                            <i class="material-icons">add_shopping_cart</i>
+                            Add to cart 
 
+                        </button>
+                    </form>
+                    <%}%>
+
+                <%}%>
             </td>
         </tr>
     <%});%>

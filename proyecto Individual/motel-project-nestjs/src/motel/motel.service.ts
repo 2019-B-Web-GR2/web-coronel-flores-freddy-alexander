@@ -44,7 +44,7 @@ export class MotelService {
         order: order1
       },
 
-    )
+    );
   }
 
 }
